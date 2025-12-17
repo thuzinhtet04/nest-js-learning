@@ -1,16 +1,27 @@
+import type { Connection } from 'src/common/constants/connection';
 import { SongsService } from './songs.service';
 import {
   Controller,
   Get,
   HttpStatus,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
+  Scope,
 } from '@nestjs/common';
 
-@Controller('songs')
+@Controller({ path: 'songs', scope: Scope.REQUEST })
 export class SongsController {
-  constructor(private readonly songsService: SongsService) {}
+  constructor(
+    private songsService: SongsService,
+    @Inject('CONNECTION') private connection: Connection,
+  ) {
+    console.log('helo');
+    console.log(
+      `this is connection string ${this.connection.CONNECTION_STRING}`,
+    );
+  }
   @Get()
   findAll() {
     return this.songsService.findAll();
