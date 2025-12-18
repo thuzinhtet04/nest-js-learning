@@ -9,11 +9,32 @@ import { AppService } from './app.service';
 import { SongsModule } from './songs/songs.module';
 import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
 import { DevConfigService } from './common/providers/DevConfigService';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './users/users.entity';
+import { Song } from './songs/song.entities';
+import { Artist } from './artists/artist.entity';
+import { Playlist } from './playlists/playlist.entity';
+import { PlaylistsModule } from './playlists/playlists.module';
+import { DataSource } from 'typeorm';
 
 const devConfig = { port: 3000 };
 const proConfig = { port: 4000 };
 @Module({
-  imports: [SongsModule],
+  imports: [
+    SongsModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'root',
+      database: 'nestjs',
+      entities: [User, Song, Artist, Playlist],
+      synchronize: true,
+    }),
+
+    PlaylistsModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
@@ -30,6 +51,9 @@ const proConfig = { port: 4000 };
   ],
 })
 export class AppModule implements NestModule {
+  constructor(private dataSource: DataSource) {
+    console.log('dbName', dataSource.driver.database);
+  }
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)

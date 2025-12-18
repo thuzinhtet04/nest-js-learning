@@ -17,13 +17,10 @@ export class Song {
   @Column()
   title: string;
 
-  // @Column('varchar', { array: true })
-  // artists: string[];
-
   @Column('date')
   releasedDate: Date;
 
-  @Column('time')
+  @Column({ type: 'time' })
   duration: Date;
 
   @Column('text')
@@ -36,6 +33,6 @@ export class Song {
   /**
    * Many songs can belong to playlist for each unique user
    */
-  @ManyToOne(() => Playlist, (playList) => playList.songs)
+  @ManyToOne(() => Playlist, (playList) => playList.songs, { nullable: true })
   playList: Playlist;
 }

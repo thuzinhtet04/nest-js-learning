@@ -10,17 +10,20 @@ import {
 } from 'class-validator';
 import { Artist } from 'src/artists/artist.entity';
 
-export class CreateSongDto {
+export class UpdateSongDto {
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   readonly title: string;
 
   @IsArray()
   @ArrayNotEmpty()
   @IsNumber({}, { each: true })
+  @IsOptional()
   readonly artists: Artist[];
 
   @IsDateString()
+  @IsOptional()
   readonly releasedDate: Date;
 
   @IsString()
@@ -28,5 +31,6 @@ export class CreateSongDto {
   readonly lyrics: string;
 
   @IsMilitaryTime()
+  @IsOptional()
   readonly duration: Date;
 }
