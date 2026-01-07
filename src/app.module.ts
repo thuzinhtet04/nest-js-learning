@@ -26,19 +26,16 @@ const proConfig = { port: 4000 };
     SongsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db',
+      host: 'localhost',
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'postgres',
+      database: 'nestjs',
       entities: [User, Song, Artist, Playlist],
       synchronize: true,
     }),
-
     PlaylistsModule,
-
     UsersModule,
-
     AuthModule,
   ],
   controllers: [AppController],
